@@ -1,0 +1,33 @@
+package KieRule
+
+import com.journaldev.spring.Order;
+global com.journaldev.spring.OutputDisplay showResults;
+
+dialect  "mvel"
+
+rule "MASTERCARD"
+    when
+        orderObject : Order(cardType == "MASTERCARD" && price > 10000);
+    then
+        orderObject.setDiscount(10);
+        showResults.showText("showResults MASTERCARD has been added a discount");
+
+end;
+
+rule "VISA"
+    when
+        orderObject : Order(cardType == "VISA" && price > 5000);
+    then
+        orderObject.setDiscount(14);
+        //showResults.showText("showResults VISA has been added a discount");
+        //sh.showText("sh VISA has been added a discount");
+end;
+
+rule "ICICI"
+    when
+        orderObject : Order(cardType == "ICICI" && price > 3000);
+    then
+       // sh.showText("sh ICICI has been added a discount");
+        orderObject.setDiscount(20);
+        //showResults.showText("showResults ICICI has been added a discount");
+end;
