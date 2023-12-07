@@ -1,6 +1,7 @@
 package com.journaldev.spring;
 
 import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieRuntime;
 import org.kie.api.runtime.KieSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,6 +18,8 @@ public class OrderController {
     @ResponseBody
     public Order processRules(@RequestBody Order order) {
         KieSession kieSession = kieContainer.newKieSession();
+        KieRuntime kieRuntime = (KieRuntime) kieSession;
+        kieRuntime.setGlobal("showResults", new OutputDisplay());
         kieSession.insert(order);
         kieSession.fireAllRules();
         return order;
