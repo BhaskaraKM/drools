@@ -13,7 +13,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 @ComponentScan("com.journaldev.spring")
 public class DroolsConfiguration {
-    private static final String drlFile = "order.drl";
+    private static final String drlFile = "order_old.drl";
     @Bean
     public KieContainer kieContainer() {
         KieServices kieServices = KieServices.Factory.get();

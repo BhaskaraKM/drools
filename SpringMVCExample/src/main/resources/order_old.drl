@@ -1,0 +1,43 @@
+package KieRule
+dialect "mvel"
+import java.util.*;
+import com.journaldev.spring.Order;
+import com.journaldev.spring.model.Message;
+import java.util.ArrayList;
+import java.util.List;
+import com.journaldev.spring.model.Account;
+global com.journaldev.spring.OutputDisplay showResults;
+
+global java.util.List<Message> messageList;
+global Map<String, Message> mapResult;
+
+rule "VISA"
+    when
+        orderObject : Order(cardType == "VISA" && price > 5000)
+    then
+        orderObject.setDiscount(14);
+        showResults.showText("showResults VISA has been added a discount");
+        showResults.showText("sh VISA has been added a discount");
+end;
+
+rule "ICICI"
+    when
+        orderObject : Order(cardType == "ICICI" && price > 3000)
+    then
+       showResults.showText("sh ICICI has been added a discount");
+       orderObject.setDiscount(20);
+       showResults.showText("showResults ICICI has been added a discount");
+end;
+
+rule "CD Maturity Reminder Banner Message"
+    when
+        $accountObj : Account($accountId : accountId, $accountType : accountType, $statuCode : statuCode)
+        not Account($accountType == "CDA" && $statuCode == "IN_GRACE")
+    then
+        Message message = new Message();
+        message.setMessageId("cd.maturity.reminder");
+        message.setMessage("Your CDA account matured, take action with 7 days.");
+        mapResult.put($accountId, message);
+        retract($accountObj);
+end;
+
